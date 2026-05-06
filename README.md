@@ -1,19 +1,19 @@
 # claude-ops-kit
 
-A minimal Claude Code operations toolkit — hooks, commands, and agents for structured project work.
+Claude Code を使った集中的なプロジェクト運用を支える、最小限のツールキット。
 
-Built and battle-tested during a 10-week job-hunting sprint using Claude Code as the primary development environment.
+フック・コマンド・エージェントで構成され、10 週間の転職活動スプリントで実運用しながら作り込んだ。
 
-## What's Included
+## 何が入っているか
 
-| Type | File | Purpose |
+| 種別 | ファイル | 用途 |
 |---|---|---|
-| Hook | `hooks/session-start.sh` | Display project week / elapsed days / deadline countdown at session start |
-| Hook | `hooks/stop.sh` | Auto-append session entry to the current week's log file on exit |
-| Command | `commands/weekly-review.md` | Run a structured weekly retrospective and update the log |
-| Agent | `agents/job-application-reviewer.md` | Pre-submission review of cover letters and resumes |
+| Hook | `hooks/session-start.sh` | セッション開始時に週番号・経過日数・締め切りまでの残日数を表示 |
+| Hook | `hooks/stop.sh` | セッション終了時に今週のログファイルへ自動追記 |
+| Command | `commands/weekly-review.md` | 週次レビューを実行してログを更新する |
+| Agent | `agents/job-application-reviewer.md` | 応募書類（志望動機・職務経歴書）の提出前レビュー |
 
-## Install
+## インストール
 
 ```bash
 git clone https://github.com/archforge-labs/claude-ops-kit
@@ -21,26 +21,26 @@ cd claude-ops-kit
 ./install.sh /path/to/your-project
 ```
 
-Or install into the current directory:
+カレントディレクトリにインストールする場合:
 
 ```bash
 ./install.sh
 ```
 
-## Configure
+## 設定
 
-Edit `.ops-kit-config` in your project root:
+プロジェクトルートの `.ops-kit-config` を編集する:
 
 ```bash
-OPS_KIT_START_DATE="2026-01-01"   # project start (required)
-OPS_KIT_TARGET_DATE="2026-07-01"  # deadline (optional)
-OPS_KIT_LOG_DIR="logs/weekly"     # weekly log directory
-OPS_KIT_PROJECT_NAME="My Project" # display name
+OPS_KIT_START_DATE="2026-01-01"   # プロジェクト開始日（必須）
+OPS_KIT_TARGET_DATE="2026-07-01"  # 締め切り日（任意）
+OPS_KIT_LOG_DIR="logs/weekly"     # 週次ログの置き場所
+OPS_KIT_PROJECT_NAME="My Project" # 表示名
 ```
 
-## Register Hooks
+## フック登録
 
-Add to your project's `.claude/settings.json`:
+プロジェクトの `.claude/settings.json` に追加する:
 
 ```json
 {
@@ -55,29 +55,29 @@ Add to your project's `.claude/settings.json`:
 }
 ```
 
-## Usage
+## 使い方
 
-### Session tracking
+### セッション追跡
 
-Once hooks are registered, Claude Code automatically:
-- Shows project status when a session starts
-- Logs session end time + last commit to `logs/weekly/W{N}.md`
+フック登録後は Claude Code が自動で:
+- セッション開始時にプロジェクト状況を表示
+- セッション終了時に `logs/weekly/W{N}.md` へ終了時刻と最新コミットを追記
 
-### Weekly review
+### 週次レビュー
 
 ```
 /weekly-review
 ```
 
-Detects the current week, updates `logs/weekly/W{N}.md` with progress and retrospective prompts.
+現在の週番号を判定し、`logs/weekly/W{N}.md` を開いて進捗・振り返りを記録する。
 
-### Application review
+### 応募書類レビュー
 
-Edit `agents/job-application-reviewer.md` — fill in the `[YOUR_*]` placeholders with your own profile. Then use the agent when reviewing job application documents.
+`agents/job-application-reviewer.md` の `[YOUR_*]` プレースホルダーを自分のプロフィールに書き換えて使う。
 
-## Weekly Log Structure
+## 週次ログの構造
 
-Logs are written to `logs/weekly/W{N}.md` where N is the week number since `OPS_KIT_START_DATE`.
+ログは `OPS_KIT_START_DATE` からの週番号で自動的に振り分けられる。
 
 ```
 logs/
@@ -87,21 +87,21 @@ logs/
     └── W2.md
 ```
 
-Each file accumulates session entries automatically via the stop hook:
+stop フックによって各ファイルに以下が自動追記される:
 
 ```
-## Session Log
+## セッションログ
 
-- 2026-05-06 23:30 | `a1b2c3d feat: add feature` / uncommitted: 2 files
+- 2026-05-06 23:30 | `a1b2c3d feat: 機能追加` / uncommitted: 2 files
 ```
 
-## Design Principles
+## 設計方針
 
-- **Zero dependencies** — pure bash hooks, markdown commands
-- **Config over hardcode** — all paths and dates in `.ops-kit-config`
-- **Non-destructive** — hooks exit cleanly if log files don't exist
-- **macOS + Linux** — hooks handle both `date` and `gdate`
+- **依存ゼロ** — 純粋な bash と Markdown のみ
+- **設定ファイル中心** — パスや日付はすべて `.ops-kit-config` に集約
+- **非破壊的** — ログファイルが存在しなければフックは何もしない
+- **macOS / Linux 対応** — `date` と `gdate` の両方に対応
 
-## License
+## ライセンス
 
 MIT
