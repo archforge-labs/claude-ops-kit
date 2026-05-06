@@ -1,0 +1,19 @@
+# Claude Ops Kit — Project Configuration
+# Copy this file to .ops-kit-config and customize.
+# This file is sourced by hooks/session-start.sh and hooks/stop.sh.
+
+# Project start date (YYYY-MM-DD)
+# Used to calculate week number (W0, W1, W2, ...) and elapsed days.
+OPS_KIT_START_DATE="2026-01-01"
+
+# Target/deadline date (YYYY-MM-DD) — optional
+# If set, session-start hook shows days remaining.
+OPS_KIT_TARGET_DATE=""
+
+# Directory containing weekly log files (relative to project root)
+# Default: logs/weekly
+OPS_KIT_LOG_DIR="logs/weekly"
+
+# Project display name shown in session-start output
+# Default: git repo directory name
+OPS_KIT_PROJECT_NAME="My Project"
